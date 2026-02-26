@@ -12,7 +12,7 @@ inputs:
   version:
     description: "NPM version of @ivy-apps/deslop (e.g. '1.2.3', '1', or 'latest'). Pin to a specific version for predictable results."
     required: false
-    default: "latest"
+    default: "0.4.8"
   mode:
     description: "Run mode: 'check' reports errors and may fail; 'fix' applies changes and opens a PR."
     required: false
