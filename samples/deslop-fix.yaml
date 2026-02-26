@@ -1,7 +1,8 @@
 # Copy this file to your repo as .github/workflows/deslop-fix.yaml
 #
-# Runs Deslop in fix mode on every push to main. Applies fixes, then opens a PR
-# (branch: deslop-fixes) targeting the branch that ran the workflow.
+# Runs Deslop in fix mode when triggered manually (Actions tab → Run workflow).
+# Applies fixes, then opens a PR (branch: deslop-fixes) targeting the branch
+# that was checked out when the workflow ran.
 #
 # Required: In repo Settings → Actions → General, set "Workflow permissions"
 # to "Read and write permissions".
@@ -9,8 +10,7 @@
 name: Deslop Fix
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deslop-fix:
