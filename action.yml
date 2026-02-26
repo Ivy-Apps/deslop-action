@@ -22,6 +22,11 @@ inputs:
     required: false
     default: ""
 
+  triggering-pr-number:
+    description: "Optional PR number to comment on with the fix PR link (e.g. when the run was triggered from that PR)."
+    required: false
+    default: ""
+
 outputs:
   pull-request-number:
     description: "Pull request number (fix mode only, when a PR was created or updated)."
@@ -85,3 +90,11 @@ runs:
       run: |
         echo "pull-request-number=${{ steps.cpr.outputs.pull-request-number }}" >> "$GITHUB_OUTPUT"
         echo "pull-request-url=${{ steps.cpr.outputs.pull-request-url }}" >> "$GITHUB_OUTPUT"
+
+    - name: Comment on triggering PR
+      if: inputs.mode == 'fix' && inputs.triggering-pr-number != '' && steps.cpr.outputs.pull-request-url != ''
+      shell: bash
+      run: |
+        gh pr comment ${{ inputs.triggering-pr-number }} --body "Deslop created a fix PR: ${{ steps.cpr.outputs.pull-request-url }}"
+      env:
+        GH_TOKEN: ${{ github.token }}
