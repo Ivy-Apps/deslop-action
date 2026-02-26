@@ -73,6 +73,7 @@ Optional: use the action outputs (e.g. PR URL) in later steps:
 
 | Input    | Required | Default   | Description |
 |----------|----------|-----------|-------------|
+| `gemini-api-key` | No | `""` | Gemini API key for Deslop (e.g. next-intl translations). Omit or use a placeholder; Deslop works without a valid key but translations won’t run. Pass via a secret: `gemini-api-key: ${{ secrets.GEMINI_API_KEY }}`. |
 | `version` | No     | `latest` | NPM version of `@ivy-apps/deslop` (e.g. `"1.2.3"`, `"1"`, or `"latest"`). Prefer a specific version for reproducible runs. |
 | `mode`   | No       | `check`   | `check` — report only, may fail the job; `fix` — apply fixes and open a PR. |
 | `args`   | No       | `""`      | Extra arguments passed to the Deslop CLI. Use this if your Deslop version uses different flags or subcommands (e.g. `check` / `fix`).

@@ -5,6 +5,10 @@ branding:
   color: "green"
 
 inputs:
+  gemini-api-key:
+    description: "Gemini API key for Deslop (e.g. next-intl translations). Optional; use an invalid placeholder if not needed."
+    required: false
+    default: ""
   version:
     description: "NPM version of @ivy-apps/deslop (e.g. '1.2.3', '1', or 'latest'). Pin to a specific version for predictable results."
     required: false
@@ -36,6 +40,20 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: "20"
+
+    - name: Create Deslop secrets config
+      shell: bash
+      run: |
+        mkdir -p "$HOME/.deslop"
+        node -e "
+        const key = process.env.GEMINI_API_KEY || 'invalid';
+        require('fs').writeFileSync(
+          process.env.HOME + '/.deslop/secrets.json',
+          JSON.stringify({ geminiApiKey: key }, null, 2)
+        );
+        "
+      env:
+        GEMINI_API_KEY: ${{ inputs.gemini-api-key }}
 
     - name: Run Deslop (check)
       if: inputs.mode == 'check'
