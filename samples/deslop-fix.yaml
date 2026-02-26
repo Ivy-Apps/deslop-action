@@ -1,0 +1,26 @@
+# Copy this file to your repo as .github/workflows/deslop-fix.yaml
+#
+# Runs Deslop in fix mode on every push to main. Applies fixes, then opens a PR
+# (branch: deslop-fixes) targeting the branch that ran the workflow.
+#
+# Required: In repo Settings → Actions → General, set "Workflow permissions"
+# to "Read and write permissions".
+
+name: Deslop Fix
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deslop-fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: ivy-apps/deslop-action@v1
+        with:
+          mode: fix
+          # Optional: for next-intl translations, add a repo secret (e.g. GEMINI_API_KEY) and use:
+          # gemini-api-key: ${{ secrets.GEMINI_API_KEY }}
