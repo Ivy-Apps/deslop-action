@@ -1,5 +1,7 @@
 # Copy this file to your repo as .github/workflows/deslop-fix.yaml
 #
+# Uses the latest action from the default branch (@main). For a pinned version use @v1 or @v1.0.0.
+#
 # Triggers:
 # 1. Manual: Actions tab → Deslop Fix → Run workflow.
 # 2. PR comment: comment "@deslop fix" on a PR to run fixes on that PR's branch;
@@ -26,7 +28,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: ivy-apps/deslop-action@v1
+      - uses: ivy-apps/deslop-action@main
         with:
           mode: fix
           triggering-pr-number: ${{ github.event_name == 'issue_comment' && github.event.issue.number || '' }}

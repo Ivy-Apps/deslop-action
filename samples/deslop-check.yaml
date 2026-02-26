@@ -1,5 +1,7 @@
 # Copy this file to your repo as .github/workflows/deslop-check.yaml
 #
+# Uses the latest action from the default branch (@main). For a pinned version use @v1 or @v1.0.0.
+#
 # Runs Deslop in check mode on every push and pull request to main.
 # The job fails if Deslop reports issues (exit code 1).
 
@@ -15,6 +17,6 @@ jobs:
   deslop:
     runs-on: ubuntu-latest
     steps:
-      - uses: ivy-apps/deslop-action@v1
+      - uses: ivy-apps/deslop-action@main
         with:
           mode: check
