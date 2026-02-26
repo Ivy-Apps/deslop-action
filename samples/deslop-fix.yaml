@@ -28,9 +28,19 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Get PR head ref
+        if: github.event_name == 'issue_comment'
+        id: pr
+        run: |
+          HEAD_REF=$(gh pr view ${{ github.event.issue.number }} --json headRefName -q '.headRefName')
+          echo "ref=refs/heads/${HEAD_REF}" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - uses: ivy-apps/deslop-action@main
         with:
           mode: fix
+          ref: ${{ steps.pr.outputs.ref }}
           triggering-pr-number: ${{ github.event_name == 'issue_comment' && github.event.issue.number || '' }}
           # Optional: for next-intl translations, add a repo secret (e.g. GEMINI_API_KEY) and use:
           # gemini-api-key: ${{ secrets.GEMINI_API_KEY }}

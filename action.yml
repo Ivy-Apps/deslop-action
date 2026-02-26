@@ -27,6 +27,11 @@ inputs:
     required: false
     default: ""
 
+  ref:
+    description: "Optional ref to checkout (e.g. refs/heads/branch-name). When set, the action runs on this ref so the fix PR is based on it (e.g. pass the PR head when triggered by a comment)."
+    required: false
+    default: ""
+
 outputs:
   pull-request-number:
     description: "Pull request number (fix mode only, when a PR was created or updated)."
@@ -40,6 +45,15 @@ runs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        ref: ${{ inputs.ref || github.ref }}
+
+    - name: Get base branch name
+      if: inputs.mode == 'fix'
+      id: base
+      shell: bash
+      run: |
+        BRANCH=$(git branch --show-current)
+        echo "branch=${BRANCH:-${{ github.ref_name }}}" >> "$GITHUB_OUTPUT"
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -78,8 +92,8 @@ runs:
       uses: peter-evans/create-pull-request@v8
       with:
         commit-message: "chore: apply Deslop fixes"
-        branch: deslop-fixes-${{ github.ref_name }}
-        title: "Apply Deslop fixes (into ${{ github.ref_name }})"
+        branch: deslop-fixes-${{ steps.base.outputs.branch }}
+        title: "Apply Deslop fixes (into ${{ steps.base.outputs.branch }})"
         body: |
           Automated fixes from [Deslop](https://www.npmjs.com/package/@ivy-apps/deslop).
           Please review the changes before merging.
