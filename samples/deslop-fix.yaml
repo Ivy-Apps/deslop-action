@@ -28,6 +28,9 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Get PR head ref
         if: github.event_name == 'issue_comment'
         id: pr
